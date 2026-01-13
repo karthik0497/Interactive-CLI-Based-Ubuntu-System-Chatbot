@@ -60,6 +60,16 @@ def start():
             if user_input.lower() in ["status", "check system", "health"]:
                 console.print(get_system_status())
                 continue
+            
+            if user_input.lower() == "enable autostart":
+                from modules.startup_manager import enable_autostart
+                enable_autostart()
+                continue
+                
+            if user_input.lower() == "disable autostart":
+                from modules.startup_manager import disable_autostart
+                disable_autostart()
+                continue
 
             if has_ai:
                 with console.status("[bold green]Thinking...[/bold green]", spinner="dots"):
