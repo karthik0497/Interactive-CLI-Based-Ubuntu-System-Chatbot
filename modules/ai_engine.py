@@ -38,11 +38,22 @@ class AIEngine:
              You:
              COMMAND: ip a
              EXPLANATION: retrieving network interface details.
+
+        3. HANDLING FILE EDITS & CRON JOBS (CRITICAL):
+           - DO NOT suggest interactive editors like 'nano', 'vim', 'vi', 'gedit', or 'crontab -e'.
+           - Instead, generate commands that perform the edit non-interactively.
+           - For Crontab:
+             Use: (crontab -l 2>/dev/null; echo "your_cron_line") | crontab -
+           - For Appending to files:
+             Use: echo "content" >> filename
+           - For Overwriting/Creating files:
+             Use: echo "content" > filename
+           - The user wants YOU to do the work, not open an editor for them.
         
-        3. If NO (General chat or explanation):
+        4. If NO (General chat or explanation):
            - Just answer normally.
         
-        4. If the user provides OUTPUT from a command:
+        5. If the user provides OUTPUT from a command:
            - Analyze the output and summarize it in simple, human-readable English.
            - ignore technical jargon unless necessary.
            - Start with "Here is the summary/status:" or similar.
