@@ -18,13 +18,31 @@ def execute_command(command: str) -> tuple[bool, str]:
         try:
             console.print(f"[dim]Executing: {command}[/dim]")
             # Using subprocess to run the command
-            result = subprocess.run(
-                command, 
-                shell=True, 
-                check=False, 
-                text=True, 
-                capture_output=True
-            )
+            # Check if command is likely interactive (requires TTY)
+            is_interactive = False
+            check_cmd = command.strip()
+            if "crontab -e" in check_cmd:
+                is_interactive = True
+            elif check_cmd.split()[0] in ["nano", "vim", "vi", "nvim", "top", "htop", "less", "more", "man", "ssh"]:
+                is_interactive = True
+            
+            if is_interactive:
+                # Run interactive commands directly connected to TTY
+                result = subprocess.run(
+                    command,
+                    shell=True,
+                    check=False
+                )
+                output_str = "(Interactive session completed)"
+            else:
+                # Run standard commands capturing output for AI analysis
+                result = subprocess.run(
+                    command, 
+                    shell=True, 
+                    check=False, 
+                    text=True, 
+                    capture_output=True
+                )
             
             output_str = ""
             if result.stdout:
